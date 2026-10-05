@@ -1,15 +1,15 @@
-# AI Phone Service Threat Model
+# Threat Model: LLM Phone and SMS Assistants
 
-A quick threat model for an AI phone service I'm building. It takes voice calls, and I'm adding MMS support. This is a design review, not a pentest report. There's no client data or real numbers in here.
+A quick, general threat model for AI assistants that take voice calls and text or MMS messages. It's a design level look at common risks, not a pentest report and not a review of any specific product.
 
-## How it works
+## How these systems work
 
-A caller talks or texts. Speech gets turned into text, an LLM decides what to say, it may trigger some backend actions, and the reply goes back out by voice or message. Every one of those hand-offs is a place something can go wrong.
+A caller talks or texts. Speech gets turned into text, an LLM decides what to say, it may trigger backend actions, and the reply goes back out by voice or message. Every one of those hand-offs is a place something can go wrong.
 
-## Risks
+## Common risks
 
-| # | Risk | Rating | What I'd do about it |
-|---|------|--------|----------------------|
+| # | Risk | Typical rating | Common mitigations |
+|---|------|----------------|--------------------|
 | 1 | Prompt injection through what the caller says or types | High | Keep system instructions apart from caller input. Limit what the model can do. Check every tool call outside the model before it runs. |
 | 2 | Injection hidden in MMS images or attachments | High | Treat all media as untrusted. Never let text pulled from an image trigger an action. |
 | 3 | Data leakage: the model exposing its prompt, config, or another caller's info | High | One session per caller, no shared memory between callers, no secrets in prompts. |
@@ -20,7 +20,7 @@ A caller talks or texts. Speech gets turned into text, an LLM decides what to sa
 | 8 | Call flooding that causes outages or a huge bill | Low to Medium | Concurrency caps, rate limiting, budget alerts. |
 | 9 | The assistant giving a wrong answer with confidence | Medium | Keep its scope narrow, hand off to a human when unsure, review transcripts. |
 
-## Tests I plan to run
+## Tests worth running
 
 - A set of prompt injection and jailbreak strings against both the call and text paths
 - Cross-session leak checks using two test numbers
@@ -29,4 +29,4 @@ A caller talks or texts. Speech gets turned into text, an LLM decides what to sa
 
 ## Notes
 
-Ratings are my own call on likelihood and impact, not a formal scoring system. The risk categories follow the OWASP Top 10 for LLM Applications. I'll update this as I run the tests. Feedback is welcome.
+Ratings are a general judgment of likelihood and impact for a typical deployment, not a formal scoring system. The categories follow the OWASP Top 10 for LLM Applications. Feedback is welcome.
