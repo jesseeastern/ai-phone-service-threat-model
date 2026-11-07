@@ -6,6 +6,16 @@ A quick, general threat model for AI assistants that take voice calls and text o
 
 A caller talks or texts. Speech gets turned into text, an LLM decides what to say, it may trigger backend actions, and the reply goes back out by voice or message. Every one of those hand-offs is a place something can go wrong.
 
+There's a diagram with the trust boundaries marked in [docs/architecture.md](docs/architecture.md).
+
+## What's in this repo
+
+| Folder | What it is |
+|--------|------------|
+| [`docs/`](docs) | Architecture and trust boundaries, plus notes on handling inbound MMS safely |
+| [`detections/`](detections) | Sigma rules for the risks below: forged webhooks, SMS pumping, prompt leaks, injection attempts |
+| [`reference/`](reference) | A small FastAPI webhook that implements the mitigations, with tests |
+
 ## Common risks
 
 | # | Risk | Typical rating | Common mitigations |
