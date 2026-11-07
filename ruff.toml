@@ -1,0 +1,13 @@
+line-length = 100
+target-version = "py312"
+
+[lint]
+select = ["E", "F", "I", "B", "S"]
+ignore = ["E501"]
+
+[lint.per-file-ignores]
+"**/test_*.py" = ["S101", "S105", "S106"]
+"demo/simulate.py" = ["S105"]
+
+[lint.isort]
+known-first-party = ["app", "evaluate", "simulate"]

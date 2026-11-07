@@ -9,6 +9,18 @@ permissions:
   contents: read
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install ruff==0.8.6 bandit==1.8.0
+      - run: ruff check .
+      - run: ruff format --check .
+      - run: bandit -q -r reference/app
+
   test:
     runs-on: ubuntu-latest
     defaults:
@@ -22,25 +34,23 @@ jobs:
           cache: pip
           cache-dependency-path: reference/requirements-dev.txt
       - run: pip install -r requirements-dev.txt
-      - name: lint
-        run: |
-          ruff check .
-          ruff format --check .
-      - name: tests
-        run: pytest -q
-      - name: bandit
-        run: bandit -q -r app
+      - run: pytest -q
 
-  sigma:
+  detections:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install sigma-cli
-      - name: check rules
+      - run: pip install -r reference/requirements-dev.txt sigma-cli
+      - name: sigma check
         run: sigma check detections/
+      - name: demo
+        working-directory: demo
+        run: pytest -q
+      - name: show alerts
+        run: python demo/evaluate.py demo/sample_events.jsonl --min-level medium
 
   secrets:
     runs-on: ubuntu-latest

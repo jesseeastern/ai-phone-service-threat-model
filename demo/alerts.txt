@@ -1,0 +1,26 @@
+71 events, 8 rules, 2 correlations
+
+[HIGH    ] Burst Of Forged Webhook Requests From One IP
+           src_ip=198.51.100.23, count=10 in 5m
+[MEDIUM  ] Known Prompt Injection Pattern In Caller Input
+           from_masked=+1506***1301, channel=sms
+[HIGH    ] Assistant Tried To Message A Number Outside The Allowlist
+           from_masked=+1506***1301, tool=send_sms, to_country=INTL
+[CRITICAL] System Prompt Canary Token In Assistant Output
+           from_masked=+1506***1302, channel=sms
+[HIGH    ] MMS Media URL Not On Provider Host
+           from_masked=+1506***1303, media_host=169.254.169.254
+[MEDIUM  ] Caller Hit The Inbound Rate Limit
+           from_masked=+1506***1304, channel=sms
+[MEDIUM  ] Caller Hit The Inbound Rate Limit
+           from_masked=+1506***1304, channel=sms
+[MEDIUM  ] Caller Hit The Inbound Rate Limit
+           from_masked=+1506***1304, channel=sms
+[MEDIUM  ] Caller Hit The Inbound Rate Limit
+           from_masked=+1506***1304, channel=sms
+[MEDIUM  ] Caller Hit The Inbound Rate Limit
+           from_masked=+1506***1304, channel=sms
+[MEDIUM  ] Outbound Message To A High Risk Destination Country
+           from_masked=+5355***2345, to_country=CU, cost_cents=1
+
+11 alerts

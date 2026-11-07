@@ -1,0 +1,71 @@
+{"ts": 1794042000.0, "event": "sms.inbound", "from_hash": "1185ec8ca48fe021", "from_masked": "+1506***1201", "channel": "sms", "injection_flag": false, "length": 19}
+{"ts": 1794042000.0, "event": "tool.allowed", "from_hash": "1185ec8ca48fe021", "from_masked": "+1506***1201", "tool": "lookup_hours", "decision": "allowed"}
+{"ts": 1794042000.0, "event": "sms.outbound", "from_hash": "1185ec8ca48fe021", "from_masked": "+1506***1201", "channel": "sms", "to_country": "NANP", "cost_cents": 1}
+{"ts": 1794042170.0, "event": "sms.inbound", "from_hash": "a49ecdf9eae37633", "from_masked": "+1506***1202", "channel": "sms", "injection_flag": false, "length": 18}
+{"ts": 1794042170.0, "event": "sms.outbound", "from_hash": "a49ecdf9eae37633", "from_masked": "+1506***1202", "channel": "sms", "to_country": "NANP", "cost_cents": 1}
+{"ts": 1794042340.0, "event": "sms.inbound", "from_hash": "1121986182b22106", "from_masked": "+1902***1203", "channel": "sms", "injection_flag": false, "length": 16}
+{"ts": 1794042340.0, "event": "tool.allowed", "from_hash": "1121986182b22106", "from_masked": "+1902***1203", "tool": "lookup_hours", "decision": "allowed"}
+{"ts": 1794042340.0, "event": "sms.outbound", "from_hash": "1121986182b22106", "from_masked": "+1902***1203", "channel": "sms", "to_country": "NANP", "cost_cents": 1}
+{"ts": 1794042510.0, "event": "sms.inbound", "from_hash": "82aff56d88a017b6", "from_masked": "+1506***1204", "channel": "sms", "injection_flag": false, "length": 7}
+{"ts": 1794042510.0, "event": "sms.outbound", "from_hash": "82aff56d88a017b6", "from_masked": "+1506***1204", "channel": "sms", "to_country": "NANP", "cost_cents": 1}
+{"ts": 1794042680.0, "event": "sms.inbound", "from_hash": "eedb2fafb3496cf3", "from_masked": "+1416***1205", "channel": "sms", "injection_flag": false, "length": 19}
+{"ts": 1794042680.0, "event": "tool.allowed", "from_hash": "eedb2fafb3496cf3", "from_masked": "+1416***1205", "tool": "lookup_hours", "decision": "allowed"}
+{"ts": 1794042680.0, "event": "sms.outbound", "from_hash": "eedb2fafb3496cf3", "from_masked": "+1416***1205", "channel": "sms", "to_country": "NANP", "cost_cents": 1}
+{"ts": 1794042850.0, "event": "webhook.rejected", "reason": "bad_signature", "path": "/sms", "src_ip": "198.51.100.23"}
+{"ts": 1794042859.0, "event": "webhook.rejected", "reason": "bad_signature", "path": "/sms", "src_ip": "198.51.100.23"}
+{"ts": 1794042868.0, "event": "webhook.rejected", "reason": "bad_signature", "path": "/sms", "src_ip": "198.51.100.23"}
+{"ts": 1794042877.0, "event": "webhook.rejected", "reason": "bad_signature", "path": "/sms", "src_ip": "198.51.100.23"}
+{"ts": 1794042886.0, "event": "webhook.rejected", "reason": "bad_signature", "path": "/sms", "src_ip": "198.51.100.23"}
+{"ts": 1794042895.0, "event": "webhook.rejected", "reason": "bad_signature", "path": "/sms", "src_ip": "198.51.100.23"}
+{"ts": 1794042904.0, "event": "webhook.rejected", "reason": "bad_signature", "path": "/sms", "src_ip": "198.51.100.23"}
+{"ts": 1794042913.0, "event": "webhook.rejected", "reason": "bad_signature", "path": "/sms", "src_ip": "198.51.100.23"}
+{"ts": 1794042922.0, "event": "webhook.rejected", "reason": "bad_signature", "path": "/sms", "src_ip": "198.51.100.23"}
+{"ts": 1794042931.0, "event": "webhook.rejected", "reason": "bad_signature", "path": "/sms", "src_ip": "198.51.100.23"}
+{"ts": 1794042940.0, "event": "webhook.rejected", "reason": "bad_signature", "path": "/sms", "src_ip": "198.51.100.23"}
+{"ts": 1794042949.0, "event": "webhook.rejected", "reason": "bad_signature", "path": "/sms", "src_ip": "198.51.100.23"}
+{"ts": 1794042958.0, "event": "webhook.rejected", "reason": "bad_signature", "path": "/sms", "src_ip": "203.0.113.50"}
+{"ts": 1794043558.0, "event": "sms.inbound", "from_hash": "6c74186c600095c1", "from_masked": "+1506***1301", "channel": "sms", "injection_flag": true, "length": 51}
+{"ts": 1794043558.0, "event": "tool.blocked", "from_hash": "6c74186c600095c1", "from_masked": "+1506***1301", "tool": "send_sms", "to_country": "INTL", "decision": "blocked", "reason": "not_allowlisted"}
+{"ts": 1794043858.0, "event": "sms.inbound", "from_hash": "1185ec8ca48fe021", "from_masked": "+1506***1201", "channel": "sms", "injection_flag": false, "length": 19}
+{"ts": 1794043858.0, "event": "tool.allowed", "from_hash": "1185ec8ca48fe021", "from_masked": "+1506***1201", "tool": "lookup_hours", "decision": "allowed"}
+{"ts": 1794043858.0, "event": "sms.outbound", "from_hash": "1185ec8ca48fe021", "from_masked": "+1506***1201", "channel": "sms", "to_country": "NANP", "cost_cents": 1}
+{"ts": 1794044028.0, "event": "sms.inbound", "from_hash": "a49ecdf9eae37633", "from_masked": "+1506***1202", "channel": "sms", "injection_flag": false, "length": 18}
+{"ts": 1794044028.0, "event": "sms.outbound", "from_hash": "a49ecdf9eae37633", "from_masked": "+1506***1202", "channel": "sms", "to_country": "NANP", "cost_cents": 1}
+{"ts": 1794044198.0, "event": "sms.inbound", "from_hash": "1121986182b22106", "from_masked": "+1902***1203", "channel": "sms", "injection_flag": false, "length": 16}
+{"ts": 1794044198.0, "event": "tool.allowed", "from_hash": "1121986182b22106", "from_masked": "+1902***1203", "tool": "lookup_hours", "decision": "allowed"}
+{"ts": 1794044198.0, "event": "sms.outbound", "from_hash": "1121986182b22106", "from_masked": "+1902***1203", "channel": "sms", "to_country": "NANP", "cost_cents": 1}
+{"ts": 1794044368.0, "event": "sms.inbound", "from_hash": "82aff56d88a017b6", "from_masked": "+1506***1204", "channel": "sms", "injection_flag": false, "length": 7}
+{"ts": 1794044368.0, "event": "sms.outbound", "from_hash": "82aff56d88a017b6", "from_masked": "+1506***1204", "channel": "sms", "to_country": "NANP", "cost_cents": 1}
+{"ts": 1794044538.0, "event": "sms.inbound", "from_hash": "eedb2fafb3496cf3", "from_masked": "+1416***1205", "channel": "sms", "injection_flag": false, "length": 19}
+{"ts": 1794044538.0, "event": "tool.allowed", "from_hash": "eedb2fafb3496cf3", "from_masked": "+1416***1205", "tool": "lookup_hours", "decision": "allowed"}
+{"ts": 1794044538.0, "event": "sms.outbound", "from_hash": "eedb2fafb3496cf3", "from_masked": "+1416***1205", "channel": "sms", "to_country": "NANP", "cost_cents": 1}
+{"ts": 1794044708.0, "event": "sms.inbound", "from_hash": "62c7635eb870c2e3", "from_masked": "+1506***1302", "channel": "sms", "injection_flag": false, "length": 33}
+{"ts": 1794044708.0, "event": "llm.canary_leak", "from_hash": "62c7635eb870c2e3", "from_masked": "+1506***1302", "channel": "sms"}
+{"ts": 1794044948.0, "event": "mms.rejected", "from_hash": "d088d964b32c7bb7", "from_masked": "+1506***1303", "reason": "bad_media_host", "media_host": "169.254.169.254"}
+{"ts": 1794045248.0, "event": "sms.inbound", "from_hash": "4f3c90594ef275c0", "from_masked": "+1506***1304", "channel": "sms", "injection_flag": false, "length": 6}
+{"ts": 1794045248.0, "event": "sms.outbound", "from_hash": "4f3c90594ef275c0", "from_masked": "+1506***1304", "channel": "sms", "to_country": "NANP", "cost_cents": 1}
+{"ts": 1794045260.0, "event": "sms.inbound", "from_hash": "4f3c90594ef275c0", "from_masked": "+1506***1304", "channel": "sms", "injection_flag": false, "length": 6}
+{"ts": 1794045260.0, "event": "sms.outbound", "from_hash": "4f3c90594ef275c0", "from_masked": "+1506***1304", "channel": "sms", "to_country": "NANP", "cost_cents": 1}
+{"ts": 1794045272.0, "event": "sms.inbound", "from_hash": "4f3c90594ef275c0", "from_masked": "+1506***1304", "channel": "sms", "injection_flag": false, "length": 6}
+{"ts": 1794045272.0, "event": "sms.outbound", "from_hash": "4f3c90594ef275c0", "from_masked": "+1506***1304", "channel": "sms", "to_country": "NANP", "cost_cents": 1}
+{"ts": 1794045284.0, "event": "sms.inbound", "from_hash": "4f3c90594ef275c0", "from_masked": "+1506***1304", "channel": "sms", "injection_flag": false, "length": 6}
+{"ts": 1794045284.0, "event": "sms.outbound", "from_hash": "4f3c90594ef275c0", "from_masked": "+1506***1304", "channel": "sms", "to_country": "NANP", "cost_cents": 1}
+{"ts": 1794045296.0, "event": "sms.inbound", "from_hash": "4f3c90594ef275c0", "from_masked": "+1506***1304", "channel": "sms", "injection_flag": false, "length": 6}
+{"ts": 1794045296.0, "event": "sms.outbound", "from_hash": "4f3c90594ef275c0", "from_masked": "+1506***1304", "channel": "sms", "to_country": "NANP", "cost_cents": 1}
+{"ts": 1794045308.0, "event": "sms.inbound", "from_hash": "4f3c90594ef275c0", "from_masked": "+1506***1304", "channel": "sms", "injection_flag": false, "length": 6}
+{"ts": 1794045308.0, "event": "sms.outbound", "from_hash": "4f3c90594ef275c0", "from_masked": "+1506***1304", "channel": "sms", "to_country": "NANP", "cost_cents": 1}
+{"ts": 1794045320.0, "event": "sms.inbound", "from_hash": "4f3c90594ef275c0", "from_masked": "+1506***1304", "channel": "sms", "injection_flag": false, "length": 6}
+{"ts": 1794045320.0, "event": "sms.outbound", "from_hash": "4f3c90594ef275c0", "from_masked": "+1506***1304", "channel": "sms", "to_country": "NANP", "cost_cents": 1}
+{"ts": 1794045332.0, "event": "sms.inbound", "from_hash": "4f3c90594ef275c0", "from_masked": "+1506***1304", "channel": "sms", "injection_flag": false, "length": 6}
+{"ts": 1794045332.0, "event": "sms.outbound", "from_hash": "4f3c90594ef275c0", "from_masked": "+1506***1304", "channel": "sms", "to_country": "NANP", "cost_cents": 1}
+{"ts": 1794045344.0, "event": "sms.inbound", "from_hash": "4f3c90594ef275c0", "from_masked": "+1506***1304", "channel": "sms", "injection_flag": false, "length": 6}
+{"ts": 1794045344.0, "event": "sms.outbound", "from_hash": "4f3c90594ef275c0", "from_masked": "+1506***1304", "channel": "sms", "to_country": "NANP", "cost_cents": 1}
+{"ts": 1794045356.0, "event": "sms.inbound", "from_hash": "4f3c90594ef275c0", "from_masked": "+1506***1304", "channel": "sms", "injection_flag": false, "length": 6}
+{"ts": 1794045356.0, "event": "sms.outbound", "from_hash": "4f3c90594ef275c0", "from_masked": "+1506***1304", "channel": "sms", "to_country": "NANP", "cost_cents": 1}
+{"ts": 1794045368.0, "event": "inbound.throttled", "from_hash": "4f3c90594ef275c0", "from_masked": "+1506***1304", "channel": "sms", "reason": "rate_limit"}
+{"ts": 1794045380.0, "event": "inbound.throttled", "from_hash": "4f3c90594ef275c0", "from_masked": "+1506***1304", "channel": "sms", "reason": "rate_limit"}
+{"ts": 1794045392.0, "event": "inbound.throttled", "from_hash": "4f3c90594ef275c0", "from_masked": "+1506***1304", "channel": "sms", "reason": "rate_limit"}
+{"ts": 1794045404.0, "event": "inbound.throttled", "from_hash": "4f3c90594ef275c0", "from_masked": "+1506***1304", "channel": "sms", "reason": "rate_limit"}
+{"ts": 1794045416.0, "event": "inbound.throttled", "from_hash": "4f3c90594ef275c0", "from_masked": "+1506***1304", "channel": "sms", "reason": "rate_limit"}
+{"ts": 1794045728.0, "event": "sms.inbound", "from_hash": "dde9d7b35241771b", "from_masked": "+5355***2345", "channel": "sms", "injection_flag": false, "length": 4}
+{"ts": 1794045728.0, "event": "sms.outbound", "from_hash": "dde9d7b35241771b", "from_masked": "+5355***2345", "channel": "sms", "to_country": "CU", "cost_cents": 1}

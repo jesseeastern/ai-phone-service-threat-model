@@ -15,6 +15,7 @@ There's a diagram with the trust boundaries marked in [docs/architecture.md](doc
 | [`docs/`](docs) | Architecture and trust boundaries, plus notes on handling inbound MMS safely |
 | [`detections/`](detections) | Sigma rules for the risks below: forged webhooks, SMS pumping, prompt leaks, injection attempts |
 | [`reference/`](reference) | A small FastAPI webhook that implements the mitigations, with tests |
+| [`demo/`](demo) | Simulated traffic with attacks mixed in, run through the Sigma rules to show what gets caught |
 
 ## Common risks
 
