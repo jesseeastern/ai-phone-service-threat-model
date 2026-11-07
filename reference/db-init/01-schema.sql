@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS messages (
 
 CREATE TABLE IF NOT EXISTS tool_decisions (
     id          BIGSERIAL PRIMARY KEY,
-    session_id  BIGINT NOT NULL REFERENCES sessions (id) ON DELETE CASCADE,
+    caller_hash TEXT NOT NULL,
     tool        TEXT NOT NULL,
     allowed     BOOLEAN NOT NULL,
     reason      TEXT,
@@ -32,16 +32,32 @@ CREATE TABLE IF NOT EXISTS tool_decisions (
     created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+-- Rate limit counters, one row per key per window. Keys are hashed numbers.
+CREATE TABLE IF NOT EXISTS rate_limits (
+    key          TEXT NOT NULL,
+    window_start TIMESTAMPTZ NOT NULL,
+    hits         INTEGER NOT NULL,
+    PRIMARY KEY (key, window_start)
+);
+
+CREATE TABLE IF NOT EXISTS daily_spend (
+    day   DATE PRIMARY KEY,
+    cents INTEGER NOT NULL CHECK (cents >= 0)
+);
+
 -- Retention: run daily (cron or pg_cron). Keeps metadata, drops content after 30 days.
 -- UPDATE messages SET body = NULL WHERE created_at < now() - interval '30 days';
+-- DELETE FROM rate_limits WHERE window_start < now() - interval '1 day';
 
 -- The app connects as this role, which can't drop tables or touch other schemas.
 DO $$
 BEGIN
     IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'assistant_app') THEN
-        CREATE ROLE assistant_app LOGIN PASSWORD NULL;
+        -- password gets set by db-init/02-app-role.sh from APP_DB_PASSWORD
+        CREATE ROLE assistant_app LOGIN;
     END IF;
 END
 $$;
-GRANT SELECT, INSERT, UPDATE ON sessions, messages, tool_decisions TO assistant_app;
+GRANT SELECT, INSERT, UPDATE ON sessions, messages, tool_decisions, rate_limits, daily_spend
+    TO assistant_app;
 GRANT USAGE ON ALL SEQUENCES IN SCHEMA public TO assistant_app;

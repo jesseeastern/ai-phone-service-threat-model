@@ -2,10 +2,13 @@ services:
   app:
     build: .
     env_file: .env
+    environment:
+      DATABASE_URL: postgresql://assistant_app:${APP_DB_PASSWORD}@db:5432/assistant
     ports:
       - "127.0.0.1:8000:8000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     read_only: true
     cap_drop: [ALL]
     security_opt:
@@ -17,9 +20,14 @@ services:
       POSTGRES_DB: assistant
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      APP_DB_PASSWORD: ${APP_DB_PASSWORD:?set APP_DB_PASSWORD in .env}
     volumes:
-      - ./schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ./db-init:/docker-entrypoint-initdb.d:ro
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d assistant"]
+      interval: 5s
+      retries: 10
     # not exposed to the host on purpose
 
 volumes:
