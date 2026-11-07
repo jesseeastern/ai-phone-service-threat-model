@@ -3,11 +3,10 @@
 The model only proposes actions. Code here decides if they run.
 """
 
-import time
-from collections import defaultdict, deque
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
-_now = time.monotonic  # swapped for a fake clock in the demo
+from .logs import hash_number
+from .store import Store
 
 ALLOWED_TOOLS = {"send_sms", "lookup_hours", "handoff_to_human"}
 
@@ -19,31 +18,15 @@ class Decision:
 
 
 @dataclass
-class RateLimiter:
-    max_events: int
-    window_seconds: int
-    _hits: dict[str, deque] = field(default_factory=lambda: defaultdict(deque))
-
-    def hit(self, key: str, now: float | None = None) -> bool:
-        """Record a hit. Returns False if this key is over the limit."""
-        now = _now() if now is None else now
-        q = self._hits[key]
-        while q and now - q[0] > self.window_seconds:
-            q.popleft()
-        if len(q) >= self.max_events:
-            return False
-        q.append(now)
-        return True
-
-
-@dataclass
 class Policy:
     outbound_allowlist: set[str]
-    limiter: RateLimiter
+    tool_limit: int = 10  # per caller
+    tool_window_seconds: int = 600
     daily_budget_cents: int = 500
-    spent_today_cents: int = 0
 
-    def check(self, caller: str, tool: str, args: dict, est_cost_cents: int = 0) -> Decision:
+    async def check(
+        self, store: Store, caller: str, tool: str, args: dict, est_cost_cents: int = 0
+    ) -> Decision:
         if tool not in ALLOWED_TOOLS:
             return Decision(False, "unknown_tool")
 
@@ -53,11 +36,11 @@ class Policy:
             if to != caller and to not in self.outbound_allowlist:
                 return Decision(False, "not_allowlisted")
 
-        if self.spent_today_cents + est_cost_cents > self.daily_budget_cents:
-            return Decision(False, "budget")
-
-        if not self.limiter.hit(caller):
+        key = "tool:" + hash_number(caller)
+        if not await store.hit(key, self.tool_limit, self.tool_window_seconds):
             return Decision(False, "rate_limit")
 
-        self.spent_today_cents += est_cost_cents
+        if not await store.reserve_spend(est_cost_cents, self.daily_budget_cents):
+            return Decision(False, "budget")
+
         return Decision(True)

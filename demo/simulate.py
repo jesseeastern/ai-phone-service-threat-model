@@ -21,7 +21,8 @@ os.environ.setdefault("LOG_HASH_SALT", "demo-salt")
 
 from fastapi.testclient import TestClient  # noqa: E402
 
-from app import assistant, logs, main, policy, signature  # noqa: E402
+from app import assistant, logs, main, signature, store  # noqa: E402
+from app.store import MemoryStore  # noqa: E402
 
 TOKEN = "demo-token"
 START = 1794042000.0  # 2026-11-07 09:00 Atlantic
@@ -74,14 +75,13 @@ def model_returns(output: assistant.ModelOutput):
 class Sim:
     def __init__(self):
         self.clock = FakeClock(START)
-        self._saved_clocks = (logs._now, policy._now)
+        self._saved_clocks = (logs._now, store._now)
         logs._now = self.clock
-        policy._now = self.clock
+        store._now = self.clock
         main.AUTH_TOKEN = TOKEN
         main.PUBLIC_BASE_URL = ""
-        main.policy.limiter._hits.clear()
-        main.inbound_limiter._hits.clear()
-        main.policy.spent_today_cents = 0
+        self._saved_store = main.store
+        main.store = MemoryStore()
         self.client = TestClient(_with_client_ip(main.app))
         self.collector = _Collector()
         # swap the app's stdout handler for one that collects in memory
@@ -91,7 +91,8 @@ class Sim:
 
     def close(self):
         self._logger.handlers = self._saved_handlers
-        logs._now, policy._now = self._saved_clocks
+        logs._now, store._now = self._saved_clocks
+        main.store = self._saved_store
 
     def text(self, frm: str, body: str = "", ip: str = "54.172.60.1", **extra):
         params = {"From": frm, "To": "+15065550100", "Body": body, **extra}

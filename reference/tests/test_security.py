@@ -1,10 +1,13 @@
+import asyncio
+
 import pytest
 
-from app import signature
+from app import signature, store
 from app.injection import looks_like_injection
 from app.logs import hash_number, mask_number
 from app.media import MediaRejected, check_url, sniff_type
-from app.policy import Policy, RateLimiter
+from app.policy import Policy
+from app.store import MemoryStore
 
 TOKEN = "test-token"
 URL = "https://example.com/sms"
@@ -53,42 +56,59 @@ def test_normal_text_not_flagged(text):
     assert not looks_like_injection(text)
 
 
+CALLER = "+15065551234"
+
+
+def check(policy, store, tool, args=None, cost=0):
+    return asyncio.run(policy.check(store, CALLER, tool, args or {}, est_cost_cents=cost))
+
+
 def make_policy(**kw):
-    return Policy(outbound_allowlist={"+15065550000"}, limiter=RateLimiter(3, 60), **kw)
+    return Policy(outbound_allowlist={"+15065550000"}, tool_limit=3, **kw)
 
 
 def test_policy_blocks_unknown_tool():
-    assert make_policy().check("+15065551234", "transfer_funds", {}).reason == "unknown_tool"
+    assert check(make_policy(), MemoryStore(), "transfer_funds").reason == "unknown_tool"
 
 
 def test_policy_blocks_number_not_on_allowlist():
-    d = make_policy().check("+15065551234", "send_sms", {"to": "+882123456789"})
+    d = check(make_policy(), MemoryStore(), "send_sms", {"to": "+882123456789"})
     assert not d.allowed and d.reason == "not_allowlisted"
 
 
 def test_policy_allows_reply_to_caller_and_allowlisted():
-    p = make_policy()
-    assert p.check("+15065551234", "send_sms", {"to": "+15065551234"}).allowed
-    assert p.check("+15065551234", "send_sms", {"to": "+15065550000"}).allowed
+    p, s = make_policy(), MemoryStore()
+    assert check(p, s, "send_sms", {"to": CALLER}).allowed
+    assert check(p, s, "send_sms", {"to": "+15065550000"}).allowed
 
 
 def test_policy_rate_limit():
-    p = make_policy()
-    results = [p.check("+15065551234", "lookup_hours", {}).allowed for _ in range(4)]
+    p, s = make_policy(), MemoryStore()
+    results = [check(p, s, "lookup_hours").allowed for _ in range(4)]
     assert results == [True, True, True, False]
 
 
 def test_policy_budget():
-    p = make_policy(daily_budget_cents=5)
-    assert p.check("+15065551234", "lookup_hours", {}, est_cost_cents=5).allowed
-    assert p.check("+15065551234", "lookup_hours", {}, est_cost_cents=1).reason == "budget"
+    p, s = make_policy(daily_budget_cents=5), MemoryStore()
+    assert check(p, s, "lookup_hours", cost=5).allowed
+    assert check(p, s, "lookup_hours", cost=1).reason == "budget"
 
 
-def test_rate_limit_window_expires():
-    rl = RateLimiter(1, 10)
-    assert rl.hit("a", now=0)
-    assert not rl.hit("a", now=5)
-    assert rl.hit("a", now=11)
+def test_rate_limit_key_is_hashed():
+    s = MemoryStore()
+    check(make_policy(), s, "lookup_hours")
+    assert all("5065551234" not in key for key in s._hits)
+
+
+def test_rate_limit_window_expires(monkeypatch):
+    clock = [0.0]
+    monkeypatch.setattr(store, "_now", lambda: clock[0])
+    s = MemoryStore()
+    assert asyncio.run(s.hit("a", 1, 10))
+    clock[0] = 5
+    assert not asyncio.run(s.hit("a", 1, 10))
+    clock[0] = 11
+    assert asyncio.run(s.hit("a", 1, 10))
 
 
 @pytest.mark.parametrize(
