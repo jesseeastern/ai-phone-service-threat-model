@@ -94,7 +94,7 @@ class Sim:
         logs._now, store._now = self._saved_clocks
         main.store = self._saved_store
 
-    def text(self, frm: str, body: str = "", ip: str = "54.172.60.1", **extra):
+    def text(self, frm: str, body: str = "", ip: str = "192.0.2.10", **extra):
         params = {"From": frm, "To": "+15065550100", "Body": body, **extra}
         sig = signature.compute_signature(TOKEN, "http://testserver/sms", params)
         return self.client.post(
