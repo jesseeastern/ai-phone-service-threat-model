@@ -12,9 +12,12 @@ Sigma rules for the risks in the main README. They run against the JSON logs des
 | `premium_destination.yml` | medium | 5 |
 | `sms_outbound.yml` (base rule) | informational | |
 | `sms_pumping_volume.yml` (correlation) | high | 5, 8 |
+| `caller_throttled.yml` | medium | 5, 8 |
 | `prompt_injection_attempt.yml` | medium | 1, 2 |
 | `system_prompt_canary_leak.yml` | critical | 3 |
 | `mms_media_ssrf.yml` | high | 2 |
+
+To see them run against simulated traffic, see [`demo/`](../demo).
 
 ## Checking and converting
 

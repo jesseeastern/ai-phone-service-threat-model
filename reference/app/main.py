@@ -5,6 +5,7 @@ from urllib.parse import urlparse
 from fastapi import FastAPI, Request, Response
 
 from . import assistant, signature
+from .country import country_of
 from .injection import looks_like_injection
 from .logs import log_event
 from .media import MediaRejected, check_url
@@ -21,12 +22,20 @@ app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 policy = Policy(
     outbound_allowlist=OUTBOUND_ALLOWLIST, limiter=RateLimiter(max_events=10, window_seconds=600)
 )
+# Separate limit on inbound messages per caller. Without it, someone can text
+# the number over and over and get a paid reply to every message.
+inbound_limiter = RateLimiter(max_events=10, window_seconds=600)
 
 FALLBACK = "Sorry, I can't help with that one. Someone will follow up."
 
 
 def twiml(message: str) -> Response:
     body = f'<?xml version="1.0" encoding="UTF-8"?><Response><Message>{escape(message)}</Message></Response>'
+    return Response(content=body, media_type="application/xml")
+
+
+def twiml_empty() -> Response:
+    body = '<?xml version="1.0" encoding="UTF-8"?><Response></Response>'
     return Response(content=body, media_type="application/xml")
 
 
@@ -61,6 +70,10 @@ async def sms(request: Request):
             )
             return twiml(FALLBACK)
 
+    if not inbound_limiter.hit(caller):
+        log_event("inbound.throttled", caller, channel=channel, reason="rate_limit")
+        return twiml_empty()
+
     flagged = looks_like_injection(body)
     log_event(
         f"{channel}.inbound", caller, channel=channel, injection_flag=flagged, length=len(body)
@@ -75,6 +88,7 @@ async def sms(request: Request):
                 "tool.blocked",
                 caller,
                 tool=call["tool"],
+                to_country=country_of(call.get("args", {}).get("to", caller)),
                 decision="blocked",
                 reason=decision.reason,
             )
@@ -85,5 +99,5 @@ async def sms(request: Request):
         log_event("llm.canary_leak", caller, channel=channel)
         return twiml(FALLBACK)
 
-    log_event("sms.outbound", caller, channel=channel, cost_cents=1)
+    log_event("sms.outbound", caller, channel=channel, to_country=country_of(caller), cost_cents=1)
     return twiml(out.reply)

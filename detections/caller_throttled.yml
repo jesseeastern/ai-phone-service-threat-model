@@ -1,0 +1,24 @@
+title: Caller Hit The Inbound Rate Limit
+id: d3941df0-399a-4d48-9390-5475fed214af
+status: experimental
+description: |
+  One caller sent more messages than the inbound limit allows and the app
+  stopped replying. Usually a bot, a stuck auto-responder on the other end,
+  or someone trying to run up the SMS bill (risks 5 and 8).
+author: Jesse Palmer
+date: 2026-11-07
+tags:
+  - attack.impact
+logsource:
+  product: phone_assistant
+  service: app
+detection:
+  selection:
+    event: inbound.throttled
+  condition: selection
+fields:
+  - from_masked
+  - channel
+falsepositives:
+  - Two auto-responders replying to each other
+level: medium

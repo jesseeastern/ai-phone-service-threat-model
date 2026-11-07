@@ -7,6 +7,8 @@ import time
 from collections import defaultdict, deque
 from dataclasses import dataclass, field
 
+_now = time.monotonic  # swapped for a fake clock in the demo
+
 ALLOWED_TOOLS = {"send_sms", "lookup_hours", "handoff_to_human"}
 
 
@@ -24,7 +26,7 @@ class RateLimiter:
 
     def hit(self, key: str, now: float | None = None) -> bool:
         """Record a hit. Returns False if this key is over the limit."""
-        now = time.monotonic() if now is None else now
+        now = _now() if now is None else now
         q = self._hits[key]
         while q and now - q[0] > self.window_seconds:
             q.popleft()
