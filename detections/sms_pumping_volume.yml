@@ -1,0 +1,21 @@
+title: High Outbound SMS Volume Tied To One Caller
+id: 18cfb9f0-e9eb-4b8a-9b89-58a1e1e55e10
+status: experimental
+description: |
+  One inbound caller is driving a lot of outbound texts in a short window. Normal
+  conversations are a handful of messages. Twenty in ten minutes points at an
+  automated loop or someone using the assistant to pump SMS (risks 5 and 8).
+author: Jesse Palmer
+date: 2026-11-07
+correlation:
+  type: event_count
+  rules:
+    - phone_sms_outbound
+  group-by:
+    - from_hash
+  timespan: 10m
+  condition:
+    gte: 20
+falsepositives:
+  - Load testing with a single test number
+level: high

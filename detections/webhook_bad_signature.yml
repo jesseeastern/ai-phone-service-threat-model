@@ -1,0 +1,28 @@
+title: Phone Assistant Webhook With Invalid Signature
+id: bb016fef-ce0d-4ca8-8f2d-d172d40f9f5d
+name: phone_webhook_bad_signature
+status: experimental
+description: |
+  A request hit the voice or SMS webhook without a valid provider signature.
+  One of these is usually a scanner. A steady stream from one IP is someone
+  trying to forge provider callbacks (risk 6).
+author: Jesse Palmer
+date: 2026-11-07
+tags:
+  - attack.initial_access
+  - attack.t1190
+logsource:
+  product: phone_assistant
+  service: app
+detection:
+  selection:
+    event: webhook.rejected
+    reason: bad_signature
+  condition: selection
+fields:
+  - src_ip
+  - path
+falsepositives:
+  - Provider rotating its auth token before the app picks up the new one
+  - Webhook URL behind a proxy that rewrites the host or scheme
+level: low

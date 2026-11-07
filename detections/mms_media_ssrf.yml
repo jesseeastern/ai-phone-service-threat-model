@@ -1,0 +1,27 @@
+title: MMS Media URL Not On Provider Host
+id: efa7ea7b-f26a-4c31-bd08-1aa5d6b555cd
+status: experimental
+description: |
+  An MMS webhook pointed at a media URL that isn't the telephony provider's
+  media host. Since the webhook is signed, this should not happen. If it does,
+  either signing is broken or someone is trying to get the server to fetch an
+  internal address (SSRF). See docs/mms-handling.md.
+author: Jesse Palmer
+date: 2026-11-07
+tags:
+  - attack.initial_access
+  - attack.t1190
+logsource:
+  product: phone_assistant
+  service: app
+detection:
+  selection:
+    event: mms.rejected
+    reason: bad_media_host
+  condition: selection
+fields:
+  - from_masked
+  - media_host
+falsepositives:
+  - Provider changing its media domain
+level: high

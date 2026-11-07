@@ -1,0 +1,24 @@
+title: System Prompt Canary Token In Assistant Output
+id: b01b14db-40a3-4fbb-bd3f-656131735478
+status: experimental
+description: |
+  The system prompt has a random canary string in it. If that string ever shows
+  up in what the assistant is about to send, the model is leaking its prompt.
+  The app blocks the reply and logs this event (risk 3).
+author: Jesse Palmer
+date: 2026-11-07
+tags:
+  - attack.collection
+logsource:
+  product: phone_assistant
+  service: app
+detection:
+  selection:
+    event: llm.canary_leak
+  condition: selection
+fields:
+  - from_masked
+  - channel
+falsepositives:
+  - Unlikely. The canary is random and shouldn't appear in normal output.
+level: critical

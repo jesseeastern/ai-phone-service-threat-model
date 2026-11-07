@@ -1,0 +1,26 @@
+title: Assistant Tried To Message A Number Outside The Allowlist
+id: eadc3f95-34d2-4563-96b6-97babbfc390d
+status: experimental
+description: |
+  The model asked to send an SMS or place a call to a number that isn't on the
+  outbound allowlist. The policy check blocked it, but this is what a successful
+  prompt injection aimed at toll fraud or spam looks like (risks 1 and 5).
+author: Jesse Palmer
+date: 2026-11-07
+tags:
+  - attack.impact
+logsource:
+  product: phone_assistant
+  service: app
+detection:
+  selection:
+    event: tool.blocked
+    reason: not_allowlisted
+  condition: selection
+fields:
+  - from_masked
+  - tool
+  - to_country
+falsepositives:
+  - A legitimate business number that hasn't been added to the allowlist yet
+level: high

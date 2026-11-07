@@ -1,0 +1,17 @@
+title: Outbound SMS Sent By Assistant
+id: d27e4d81-fcc6-4f9d-ab33-3397cd12ccd0
+name: phone_sms_outbound
+status: experimental
+description: Base rule for outbound SMS. Not useful alone, used by the volume correlation.
+author: Jesse Palmer
+date: 2026-11-07
+logsource:
+  product: phone_assistant
+  service: app
+detection:
+  selection:
+    event: sms.outbound
+  condition: selection
+falsepositives:
+  - Every normal reply
+level: informational

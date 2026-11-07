@@ -1,0 +1,18 @@
+title: Burst Of Forged Webhook Requests From One IP
+id: ed77bc57-ebc0-4d03-98ce-4897e5200428
+status: experimental
+description: Ten or more unsigned or badly signed webhook requests from the same IP in five minutes.
+author: Jesse Palmer
+date: 2026-11-07
+correlation:
+  type: event_count
+  rules:
+    - phone_webhook_bad_signature
+  group-by:
+    - src_ip
+  timespan: 5m
+  condition:
+    gte: 10
+falsepositives:
+  - Signing secret mismatch after a deploy, which would show up from the provider's IP ranges
+level: high

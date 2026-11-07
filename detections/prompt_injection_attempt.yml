@@ -1,0 +1,26 @@
+title: Known Prompt Injection Pattern In Caller Input
+id: af9e0a1b-58fd-4f56-9c00-f55b048a34ab
+status: experimental
+description: |
+  Caller text, a voice transcript, or text pulled from an MMS image matched one of
+  the app's injection patterns ("ignore previous instructions", fake system
+  messages, and so on). Pattern matching is easy to get around, so treat this as
+  a signal to look at the session, not as the defence itself (risks 1 and 2).
+author: Jesse Palmer
+date: 2026-11-07
+tags:
+  - attack.initial_access
+logsource:
+  product: phone_assistant
+  service: app
+detection:
+  selection:
+    injection_flag: true
+  condition: selection
+fields:
+  - from_masked
+  - channel
+falsepositives:
+  - People testing the assistant
+  - Ordinary messages that happen to use phrases like "ignore that"
+level: medium

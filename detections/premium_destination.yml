@@ -1,0 +1,36 @@
+title: Outbound Message To A High Risk Destination Country
+id: 21902ff0-e8e8-4fd1-857d-aa3397143564
+status: experimental
+description: |
+  Outbound SMS or call to a country code commonly abused for SMS pumping and
+  international revenue share fraud. Tune the list to the countries the business
+  actually serves.
+author: Jesse Palmer
+date: 2026-11-07
+tags:
+  - attack.impact
+logsource:
+  product: phone_assistant
+  service: app
+detection:
+  selection_event:
+    event:
+      - sms.outbound
+      - voice.outbound
+  selection_country:
+    to_country:
+      - CU
+      - LV
+      - MV
+      - SO
+      - ST
+      - TL
+      - TV
+  condition: all of selection_*
+fields:
+  - from_masked
+  - to_country
+  - cost_cents
+falsepositives:
+  - Real customers in those countries, if the business serves them
+level: medium
